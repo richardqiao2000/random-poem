@@ -7,8 +7,9 @@ NOUN=heart|sun|moon|thunder|fire|time|wind|sea <VERB>|<PREPOSITION> river|flavor
 
 ## Classs Design
 In package "org.richardqiao.nlp.random_poem.rules"
-* Rule -- Rule class for all the rules other than POEM.
-  When initiated, a set of inter-reference different rule objects will be built and referred to each other, with a recursive method randomGen which is used to generate poems
+* Class Rule -- Class Rule is for all the rules.
+** When initiated, a set of inter-reference different rule objects will be built and referred to each other, with a recursive method randomGen which is used to generate poems.
+** It's using a static HashMap to maintain the single object to be used repeatly.
 ```Java
   //Flag if it's a pure word list rule
   private boolean isWordList = false;
