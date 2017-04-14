@@ -30,9 +30,7 @@ public class Rule {
     if(ruleName.equals("LINE")) isLine = true;
     String rule = props.getProperty(ruleName).replace("<", "").replace(">", "");
     String[] ruleList = new String[0];
-    if(ruleName.equals("POEM")){
-      ruleList = rule.split(" ");
-    }else if(ruleName.equals("LINE")){
+    if(ruleName.equals("LINE")){
       ruleList = rule.split(" ")[0].split("\\|");
     }else{
       String[] arr = rule.split(" ");
