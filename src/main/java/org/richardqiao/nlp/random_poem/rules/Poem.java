@@ -10,7 +10,7 @@ public class Poem {
                           .replace(">", "").split(" ");
     rules = new Rule[arr.length];
     for(int i = 0; i < rules.length; i++){
-      if(Rule.getMap().isEmpty()){
+      if(Rule.getMap().isEmpty() || !Rule.getMap().containsKey(arr[i].trim())){
         rules[i] = new Rule(arr[i].trim());
       }else{
         rules[i] = Rule.getMap().get(arr[i].trim());
