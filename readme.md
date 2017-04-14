@@ -9,3 +9,12 @@
   Poem poem = new Poem();
   System.out.println(poem.poemGen());
 ```
+Output:
+```
+moon stands his river against black 
+willow flows my bright clear wind 
+flavor beside your black muddy harvest above flavor outside time 
+my white 
+my bright pasture 
+
+```
