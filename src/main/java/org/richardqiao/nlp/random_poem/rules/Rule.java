@@ -9,16 +9,17 @@ import java.util.Properties;
 import java.util.Random;
 
 public class Rule {
-  private static Map<String, Rule> map;
+  private static Map<String, Rule> map = new HashMap<String, Rule>();
   private boolean isLine = false;
-  protected Rule[] rules;
-  protected String[] beginWords;
-  protected static Properties props;
+  private Rule[] rules;
+  private String[] beginWords;
+  private static Properties props;
+  
+  public static Map<String, Rule> getMap(){
+    return map;
+  }
   
   public Rule(String ruleName) throws FileNotFoundException, IOException{
-    if(map == null){
-      map = new HashMap<String, Rule>();
-    }
     if(props == null){
       props = new Properties();
       props.load(new FileInputStream("src/main/resources/rules.properties"));

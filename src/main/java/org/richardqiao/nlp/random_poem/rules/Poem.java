@@ -10,11 +10,15 @@ public class Poem {
   public Poem() throws FileNotFoundException, IOException{
     Properties props = new Properties();
     props.load(new FileInputStream("src/main/resources/rules.properties"));
-    int size = props.getProperty("POEM").split(" ").length;
-    Rule rule = new Rule("LINE");
-    rules = new Rule[size];
+    String[] arr = props.getProperty("POEM").replace("<", "")
+                          .replace(">", "").split(" ");
+    rules = new Rule[arr.length];
     for(int i = 0; i < rules.length; i++){
-      rules[i] = rule;
+      if(Rule.getMap().isEmpty()){
+        rules[i] = new Rule(arr[i].trim());
+      }else{
+        rules[i] = Rule.getMap().get(arr[i].trim());
+      }
     }
   }
   
