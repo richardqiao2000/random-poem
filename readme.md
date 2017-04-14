@@ -3,7 +3,7 @@
 ## Classses Design
 In package "org.richardqiao.nlp.random_poem.rules"
 * Rule -- Rule class for all the rules other than POEM.
-  When initiated, a set of inter-reference different rule objects will be built and refered, with a recursive method randomGen which is used to generate poems
+  When initiated, a set of inter-reference different rule objects will be built and referred to each other, with a recursive method randomGen which is used to generate poems
 * Poem -- Poem class with a list of LINE rule
 
 ## How to run
