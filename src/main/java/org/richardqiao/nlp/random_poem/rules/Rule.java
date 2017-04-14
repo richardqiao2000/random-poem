@@ -23,7 +23,7 @@ public class Rule {
     return props;
   }
   
-  public Rule(String ruleName) throws FileNotFoundException, IOException{
+  public Rule(String ruleName){
     if(ruleName.equals("$END") || ruleName.equals("$LINEBREAK")){
       return;
     }
