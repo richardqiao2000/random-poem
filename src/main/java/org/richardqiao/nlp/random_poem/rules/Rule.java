@@ -1,12 +1,7 @@
 package org.richardqiao.nlp.random_poem.rules;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class Rule {
   private static Map<String, Rule> map = new HashMap<String, Rule>();
