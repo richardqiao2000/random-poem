@@ -1,5 +1,4 @@
 package org.richardqiao.nlp.random_poem.rules;
-
 import java.io.*;
 import java.util.*;
 
@@ -25,6 +24,9 @@ public class Rule {
       props.load(new FileInputStream("src/main/resources/rules.properties"));
     }
     String rule = props.getProperty(ruleName);
+    if(rule == null){
+      return;
+    }
     String[] ruleList = rule.split(" ");
     map.put(ruleName, this);
     for(int i = 0; i < ruleList.length; i++){
