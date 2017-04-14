@@ -1,16 +1,13 @@
 package org.richardqiao.nlp.random_poem.rules;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 public class Poem {
   private Rule[] rules;
   public Poem() throws FileNotFoundException, IOException{
-    Properties props = new Properties();
-    props.load(new FileInputStream("src/main/resources/rules.properties"));
-    String[] arr = props.getProperty("POEM").replace("<", "")
+    Rule.setProperties("src/main/resources/rules.properties");
+    String[] arr = Rule.getProperties().getProperty("POEM").replace("<", "")
                           .replace(">", "").split(" ");
     rules = new Rule[arr.length];
     for(int i = 0; i < rules.length; i++){

@@ -4,6 +4,22 @@
 In package "org.richardqiao.nlp.random_poem.rules"
 * Rule -- Rule class for all the rules other than POEM.
   When initiated, a set of inter-reference different rule objects will be built and referred to each other, with a recursive method randomGen which is used to generate poems
+```Java
+  //Generate each rule's poem text recursively
+  public String randomGen(){
+    if(rules == null || rules.length == 0){
+      return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    String begin = getRandomBeginWord();
+    if(begin.length() > 0){
+      sb.append(begin + " ");
+    }
+    sb.append(getRandomRule().randomGen());
+    if(isLine) sb.append('\n');
+    return sb.toString();
+  }
+```
 * Poem -- Poem class with a list of LINE rule
 
 ## How to run

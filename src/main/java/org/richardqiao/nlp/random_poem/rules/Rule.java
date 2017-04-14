@@ -10,20 +10,25 @@ import java.util.Random;
 
 public class Rule {
   private static Map<String, Rule> map = new HashMap<String, Rule>();
+  private static Properties props = new Properties();
+  
   private boolean isLine = false;
   private Rule[] rules;
   private String[] beginWords;
-  private static Properties props;
   
   public static Map<String, Rule> getMap(){
     return map;
   }
   
+  public static void setProperties(String path) throws FileNotFoundException, IOException{
+    props.load(new FileInputStream(path));
+  }
+  
+  public static Properties getProperties(){
+    return props;
+  }
+  
   public Rule(String ruleName) throws FileNotFoundException, IOException{
-    if(props == null){
-      props = new Properties();
-      props.load(new FileInputStream("src/main/resources/rules.properties"));
-    }
     if(ruleName.equals("$END") || ruleName.equals("$LINEBREAK")){
       return;
     }
