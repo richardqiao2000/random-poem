@@ -21,7 +21,8 @@ public class Poem {
   public String poemGen(){
     StringBuilder sb = new StringBuilder();
     for(int i = 0; i < rules.length; i++){
-      sb.append(rules[i].randomGen());
+      String tmp = rules[i].randomGen();
+      sb.append(tmp);
     }
     return sb.toString();
   }
