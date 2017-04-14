@@ -5,70 +5,105 @@ import java.util.*;
 
 public class Rule {
   private static Map<String, Rule> map = new HashMap<String, Rule>();
-  private static Properties props = new Properties();
+  private static Properties props;
+  private boolean isWordList = false;
+  private String[] words;
+  private List<Rule[]> rules = new ArrayList<Rule[]>();
   
-  private boolean isLine = false;
-  private Rule[] rules;
-  private String[] beginWords;
-  
-  public static Map<String, Rule> getMap(){
-    return map;
+  public Rule(){
+    
   }
   
-  public static void setProperties(String path) throws FileNotFoundException, IOException{
-    props.load(new FileInputStream(path));
+  public Rule(String[] words){
+    isWordList = true;
+    this.words = words;
   }
   
-  public static Properties getProperties(){
-    return props;
-  }
-  
-  public Rule(String ruleName){
-    if(ruleName.equals("$END") || ruleName.equals("$LINEBREAK")){
-      return;
+  public Rule(String ruleName) throws FileNotFoundException, IOException{
+    if(props == null){
+      props = new Properties();
+      props.load(new FileInputStream("src/main/resources/rules.properties"));
     }
-    if(ruleName.equals("LINE")) isLine = true;
-    String rule = props.getProperty(ruleName).replace("<", "").replace(">", "");
-    String[] ruleList = new String[0];
-    if(ruleName.equals("LINE")){
-      ruleList = rule.split(" ")[0].split("\\|");
-    }else{
-      String[] arr = rule.split(" ");
-      beginWords = arr[0].split("\\|");
-      ruleList = arr[1].split("\\|");
-    }
-    rules = new Rule[ruleList.length];
+    String rule = props.getProperty(ruleName);
+    String[] ruleList = rule.split(" ");
     map.put(ruleName, this);
-    for(int i = 0; i < rules.length; i++){
-      if(map.containsKey(ruleList[i])){
-        rules[i] = map.get(ruleList[i]);
+    for(int i = 0; i < ruleList.length; i++){
+      String tmp = ruleList[i].trim();
+      if(tmp.startsWith("<") || tmp.startsWith("$")){
+        tmp = tmp.replace("<", "").replace(">", "");
+        rules.add(getRules(tmp));
       }else{
-        rules[i] = new Rule(ruleList[i]);
+        rules.add(getWordRules(tmp));
       }
     }
   }
 
-
-  private String getRandomBeginWord() {
-    if(beginWords == null || beginWords.length == 0)return "";
-    return beginWords[new Random().nextInt(beginWords.length)];
+  public static Map<String, Rule> getMap(){
+    return map;
   }
   
-  private Rule getRandomRule(){
+  public void setIsWordList(boolean iswordlist){
+    isWordList = iswordlist;
+  }
+  
+  private Rule[] getRules(String rule) throws FileNotFoundException, IOException{
+    String[] arr = rule.split("\\|");
+    Rule[] res = new Rule[arr.length];
+    for(int i = 0; i < arr.length; i++){
+      String tmp = arr[i].trim();
+      if(map.containsKey(tmp)){
+        res[i] = map.get(tmp);
+      }else{
+        Rule rl = null;
+        if(tmp.equals("$END")){
+          rl = new Rule();
+        }else if(tmp.equals("$LINEBREAK")){
+          rl = new Rule(new String[]{"\n"});
+          rl.setIsWordList(true);
+        }else{
+          rl = new Rule(tmp);
+        }
+        res[i] = rl;
+      }
+    }
+    return res;
+  }
+  
+  private Rule[] getWordRules(String rule){
+    Rule[] res = new Rule[1];
+    res[0] = new Rule(rule.split("\\|"));
+    return res;
+  }
+  
+  private String getRandomWord() {
+    return words[new Random().nextInt(words.length)];
+  }
+  
+  private Rule getRandomRule(Rule[] rules){
     return rules[new Random().nextInt(rules.length)];
   }
 
+  //Generate each rule's poem text recursively
   public String randomGen(){
-    if(rules == null || rules.length == 0){
+    if(rules == null && words == null){
       return "";
     }
     StringBuilder sb = new StringBuilder();
-    String begin = getRandomBeginWord();
-    if(begin.length() > 0){
-      sb.append(begin + " ");
+    for(Rule[] rs: rules){
+      Rule rule = getRandomRule(rs);
+      String tmp = "";
+      if(rule.isWordList){
+        tmp = rule.getRandomWord();
+      }else{
+        tmp = rule.randomGen();
+      }
+      if(tmp.trim().length() > 0
+          && sb.length() > 0
+          && sb.charAt(sb.length() - 1) != '\n'){
+        sb.append(" ");
+      }
+      sb.append(tmp);
     }
-    sb.append(getRandomRule().randomGen());
-    if(isLine) sb.append('\n');
     return sb.toString();
   }
 

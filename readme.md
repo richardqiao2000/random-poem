@@ -1,26 +1,46 @@
-# Poem Generator
+# Poem Generator(upgraded version with single class Rule)
+The new version makes the code more generic and extendable. For example, we can change the rule in the original rule POEM
+from "POEM=<LINE> <LINE> <LINE> <LINE> <LINE>"
+to "POEM=<LINE> <LINE> <LINE> <LINE> <LINE> <PREPOSITION>|<ADJECTIVE>"
+Or
+NOUN=heart|sun|moon|thunder|fire|time|wind|sea <VERB>|<PREPOSITION> river|flavor|wave|willow|rain|tree|flower|field|meadow|pasture|harvest|water|father|mother|brother|sister $END
 
-## Classses Design
+## Classs Design
 In package "org.richardqiao.nlp.random_poem.rules"
 * Rule -- Rule class for all the rules other than POEM.
   When initiated, a set of inter-reference different rule objects will be built and referred to each other, with a recursive method randomGen which is used to generate poems
 ```Java
+  //Flag if it's a pure word list rule
+  private boolean isWordList = false;
+  //words used to record the starting words
+  private String[] words;
+  //rules is saving the rules sequentially after begin words
+  private List<Rule[]> rules = new ArrayList<Rule[]>();
+
   //Generate each rule's poem text recursively
   public String randomGen(){
-    if(rules == null || rules.length == 0){
+    if(rules == null && words == null){
       return "";
     }
     StringBuilder sb = new StringBuilder();
-    String begin = getRandomBeginWord();
-    if(begin.length() > 0){
-      sb.append(begin + " ");
+    for(Rule[] rs: rules){
+      Rule rule = getRandomRule(rs);
+      String tmp = "";
+      if(rule.isWordList){
+        tmp = rule.getRandomWord();
+      }else{
+        tmp = rule.randomGen();
+      }
+      if(tmp.trim().length() > 0
+          && sb.length() > 0
+          && sb.charAt(sb.length() - 1) != '\n'){
+        sb.append(" ");
+      }
+      sb.append(tmp);
     }
-    sb.append(getRandomRule().randomGen());
-    if(isLine) sb.append('\n');
     return sb.toString();
   }
 ```
-* Poem -- Poem class with a list of LINE rule
 
 ## How to run
 ```Java
