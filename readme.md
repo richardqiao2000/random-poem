@@ -1,6 +1,7 @@
 # Poem Generator
 
-## Classses Design in package "org.richardqiao.nlp.random_poem.rules"
+## Classses Design
+In package "org.richardqiao.nlp.random_poem.rules"
 * Rule -- A set of inter-reference rule objects, with a recursive method randomGen which is used to generate poems
 * Poem -- Poem class with a list of LINE rule
 
