@@ -8,6 +8,6 @@ import org.richardqiao.nlp.random_poem.rules.*;
 public class App {
     public static void main( String[] args ) throws FileNotFoundException, IOException{
       Rule poem = new Rule("POEM");
-      System.out.println(poem.randomGen());
+      System.out.print(poem.randomGen());
     }
 }

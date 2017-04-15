@@ -24,9 +24,7 @@ public class Rule {
       props.load(new FileInputStream("src/main/resources/rules.properties"));
     }
     String rule = props.getProperty(ruleName);
-    if(rule == null){
-      return;
-    }
+    if(rule == null) return;
     String[] ruleList = rule.split(" ");
     map.put(ruleName, this);
     for(int i = 0; i < ruleList.length; i++){
@@ -44,10 +42,35 @@ public class Rule {
     return map;
   }
   
-  public void setIsWordList(boolean iswordlist){
-    isWordList = iswordlist;
+  public void setIsWordList(){
+    isWordList = true;
   }
   
+  //Generate each rule's poem text recursively
+  public String randomGen(){
+    if(rules == null && words == null){
+      return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    for(Rule[] rs: rules){
+      Rule rule = getRandomRule(rs);
+      String tmp = "";
+      if(rule.isWordList){
+        tmp = rule.getRandomWord();
+        tmp = tmp.substring(0, 1).toUpperCase() + tmp.substring(1, tmp.length());
+      }else{
+        tmp = rule.randomGen();
+      }
+      if(tmp.trim().length() > 0
+          && sb.length() > 0
+          && sb.charAt(sb.length() - 1) != '\n'){
+        sb.append(" ");
+      }
+      sb.append(tmp);
+    }
+    return sb.toString();
+  }
+
   private Rule[] getRules(String rule) throws FileNotFoundException, IOException{
     String[] arr = rule.split("\\|");
     Rule[] res = new Rule[arr.length];
@@ -61,7 +84,7 @@ public class Rule {
           rl = new Rule();
         }else if(tmp.equals("$LINEBREAK")){
           rl = new Rule(new String[]{"\n"});
-          rl.setIsWordList(true);
+          rl.setIsWordList();
         }else{
           rl = new Rule(tmp);
         }
@@ -83,30 +106,6 @@ public class Rule {
   
   private Rule getRandomRule(Rule[] rules){
     return rules[new Random().nextInt(rules.length)];
-  }
-
-  //Generate each rule's poem text recursively
-  public String randomGen(){
-    if(rules == null && words == null){
-      return "";
-    }
-    StringBuilder sb = new StringBuilder();
-    for(Rule[] rs: rules){
-      Rule rule = getRandomRule(rs);
-      String tmp = "";
-      if(rule.isWordList){
-        tmp = rule.getRandomWord();
-      }else{
-        tmp = rule.randomGen();
-      }
-      if(tmp.trim().length() > 0
-          && sb.length() > 0
-          && sb.charAt(sb.length() - 1) != '\n'){
-        sb.append(" ");
-      }
-      sb.append(tmp);
-    }
-    return sb.toString();
   }
 
 }
