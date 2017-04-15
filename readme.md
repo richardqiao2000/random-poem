@@ -1,14 +1,12 @@
 # Poem Generator(upgraded version with single class Rule)
+```
 *The new version makes the code more generic and extendable. For example, we can change the rule in the original rule POEM*
-
 *from "POEM=<LINE> <LINE> <LINE> <LINE> <LINE>"*
-
 *to "POEM=<LINE> <LINE> <LINE> <LINE> <LINE> <PREPOSITION>|<ADJECTIVE>"*
-
 *Or*
-
-*NOUN=heart|sun|moon|thunder|fire|time|wind|sea <VERB>|<PREPOSITION> river|flavor|wave|willow|rain|tree|flower|field|meadow|pasture|harvest|water|father|mother|brother|sister $END*
-
+*NOUN=heart|sun|moon|thunder|fire|time|wind|sea <VERB>|<PREPOSITION> river|flavor|wave|willow|rain|tree|*
+*    flower|field|meadow|pasture|harvest|water|father|mother|brother|sister $END*
+```
 ## Classs Design
 In package "org.richardqiao.nlp.random_poem.rules"
 * Class Rule is for all the rules.
